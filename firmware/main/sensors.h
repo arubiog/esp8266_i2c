@@ -48,4 +48,16 @@ class ADCSensor : public BasicSensor{
     double readFromHW();
 };
 
+class MAX31855 : public BasicSensor{
+ public:
+    MAX31855(int8_t SCLK, int8_t CS, int8_t MISO, double a=1, double b=0, 
+           double v_min=0, double v_max=5):
+           BasicSensor(a,b,v_min, v_max){};
+  double readCelsius(void);
+  double readFarenheit(void);
+ private:
+  int8_t sclk, miso, cs;
+  double readFromHW();
+};
+
 #endif
