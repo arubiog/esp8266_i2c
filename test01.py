@@ -35,7 +35,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         host = sys.argv[1]
     else:
-        host = '10.210.1.135'
+        host = '192.168.0.159'
     rs = RemoteSensor(host)
     for i in range(20):
         print rs.getTemp() 
