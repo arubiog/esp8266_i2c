@@ -66,7 +66,7 @@ TC74Sensor st3(0x4A);
 TC74Sensor st4(0x4B);
 TC74Sensor st5(0x4D);
 MAX31855 st6(GPIO_SCLK,GPIO_CS1,GPIO_MISO);
-MAX31855 st7(GPIO_SCLK,GPIO_CS2,GPIO_MISO);
+//MAX31855 st7(GPIO_SCLK,GPIO_CS2,GPIO_MISO);
 
 
 
@@ -78,8 +78,8 @@ unsigned long previousMillis = 0;        // will store last time LED was updated
 // constants won't change :
 const long interval = 1000;           // interval at which to blink (milliseconds)
 
-BasicSensor* sensors[] = {&st1,&st2,&st3,&st4,&st5,&st6,&st7};
-int nr_sensors = 7;
+BasicSensor* sensors[] = {&st1,&st2,&st3,&st4,&st5,&st6};
+int nr_sensors = 6;
 
 
 //**************************************************************//

@@ -1,7 +1,7 @@
 #include "sensors.h"
 
-int val[16];
-int valo[16];
+int val[32]={false};
+//int valo[32]={false};
 
 
 double BasicSensor::getValue(){
@@ -73,49 +73,42 @@ double MAX31855::readFarenheit(void) {
 
 
 double MAX31855::readFromHW(void) { 
-  //int i;
   uint32_t d = 0; // we only need last 16 bits, first 16 will be discarded
-
+  //uint32_t val[32]= {false};
   /* Read the chip and return the raw temperature value */
   /* Bring CS pin low to allow us to read the data from
    the conversion process */
-  digitalWrite(cs,LOW);
+  digitalWrite((uint8_t)cs,LOW);
+  delay(10);
    /*
    Read bits 14-3 from MAX6675 for the Temp. Loop for each bit reading
    the value and storing the final value in 'temp'
    */
-  for (int i=16; i>=0; i--) {
-    digitalWrite(sclk,HIGH);
-    valo[i]= digitalRead(miso);
-    digitalWrite(sclk,LOW);
-  }
-  for (int i=31; i>=17; i--) {
-    digitalWrite(sclk,HIGH);
-    d += digitalRead(miso) << i;
-    val[i]= digitalRead(miso);
+  for (int i=31; i>=0; i--) {
+    digitalWrite((uint8_t)sclk,HIGH);
+    delay(1);    
+    d += digitalRead((uint8_t)miso) << i;
+    val[i]= digitalRead((uint8_t)miso);
+
     //Serial.println(value,BIN);
-    digitalWrite(sclk,LOW);
+    digitalWrite((uint8_t)sclk,LOW);
+    delay(1);
     //Serial.println (val[i]) ;
   }
-  digitalWrite(cs,HIGH);
+  digitalWrite((uint8_t)cs,HIGH);
+  delay(20);
+
+  
+  for (int j=31; j>=0; j--){ // output each array element's value 
+    Serial.print (val[j],BIN) ;
+  }
+  Serial.println ("uno") ;
+  Serial.println ("next") ;
   // check bit D2 if HIGH no sensor
   if ((d & 0x04) == 0x04){ Serial.println("VCC"); return -1;}
   if ((d & 0x02) == 0x02){ Serial.println("GND"); return -1;}
   if ((d & 0x01) == 0x01){ Serial.println("OPEN CIRCUIT"); return -1;}
   // shift right three places
-  for ( int j = 16; j>=0; j-- ) // output each array element's value 
-  {
-      Serial.print (valo[j],BIN) ;
-  }
-   Serial.print ("uno") ;
-    for ( int j = 32; j>=16; j-- ) // output each array element's value 
-  {
-      Serial.print (val[j],BIN) ;
-  }  
-  delay(1000);
- 
-  //Serial.println(d);
-  Serial.print ("next") ;
   return d >> 3;
 }
 

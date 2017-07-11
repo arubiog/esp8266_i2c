@@ -52,7 +52,8 @@ class MAX31855 : public BasicSensor{
  public:
     MAX31855(int8_t SCLK, int8_t CS, int8_t MISO, double a=1, double b=0, 
            double v_min=0, double v_max=5):
-           BasicSensor(a,b,v_min, v_max){};
+           BasicSensor(a,b,v_min, v_max),
+           sclk(SCLK),miso(MISO),cs(CS){};
   double readCelsius(void);
   double readFarenheit(void);
  private:
